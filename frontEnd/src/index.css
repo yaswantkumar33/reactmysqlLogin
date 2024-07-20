@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:focus {
+  /* border-color: #fff !important; Ensures the border is white on focus */
+  outline: none; /* Remove the default outline */
+  border: 2px solid #fff !important;
+}
