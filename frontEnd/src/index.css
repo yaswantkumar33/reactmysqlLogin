@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 input:focus {
-  /* border-color: #fff !important; Ensures the border is white on focus */
-  outline: none; /* Remove the default outline */
+  outline: none;
   border: 2px solid #fff !important;
+}
+label {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #060606 inset !important;
+  -webkit-text-fill-color: white !important;
 }

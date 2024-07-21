@@ -13,6 +13,10 @@ const login = () => {
       return !prev;
     });
   };
+  const [formdata, setformdata] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <section className="mt-40">
       <form className="max-w-sm mx-auto">
@@ -39,11 +43,16 @@ const login = () => {
           </div>
           <input
             type="email"
-            name="lemail"
+            name="email"
             id="email-address-icon"
             className="bg-transparent  border-purple-400 border  text-white text-sm rounded-lg focus:ring-white  block w-full ps-10 p-2.5 focus:border-white"
             placeholder="example@email.com"
+            value={formdata.email}
             onChange={(ev) => {
+              setformdata((prevval) => ({
+                ...prevval,
+                email: ev.target.value,
+              }));
               if (!checkemail.display) {
                 setcheckemail((prevval) => ({
                   ...prevval,
@@ -90,12 +99,13 @@ const login = () => {
             )}
           </div>
           <input
-            name="lpassword"
+            name="password"
             type={lpass ? "text" : "password"}
             id="email-address-icon"
             className="bg-transparent  border-purple-400 border  text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
             placeholder="password"
             onChange={(ev) => {
+              setformdata((prev) => ({ ...prev, password: ev.target.value }));
               //   setlpassword(ev.target.value);
               //   checkpasssstrength(ev.target.value);
             }}
@@ -105,7 +115,7 @@ const login = () => {
         <div className="flex items-center justify-between">
           <p className="text-white text-center mt-4">
             Don't have account regisgter
-            <a href="" className="text-purple-400 underline">
+            <a href="/register" className="text-purple-400 underline">
               Here
             </a>
           </p>
