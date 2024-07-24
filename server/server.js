@@ -34,7 +34,7 @@ const verifyauth = (req, res, next) => {
       if (err) {
         return res.json({ Error: "Error In Token Decode" });
       } else {
-        req.name = decoded.name;
+        req.userdata = { name: decoded.name, email: decoded.email };
         next();
       }
     });
@@ -42,7 +42,7 @@ const verifyauth = (req, res, next) => {
 };
 
 app.get("/", verifyauth, (req, res) => {
-  return res.json({ Status: "Success", name: req.name });
+  return res.json({ Status: "Success", userdata: req.userdata });
 });
 
 app.post("/register", (req, res) => {
@@ -61,6 +61,7 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   const sql = "SELECT * FROM users WHERE email=?";
   const vals = [req.body.email];
+  // console.log(vals);
   db.query(sql, vals, (err, data) => {
     if (err) return res.json({ Error: "Error in login check the credentials" });
     if (data.length > 0) {
@@ -71,8 +72,8 @@ app.post("/login", (req, res) => {
           if (err)
             return res.json({ Error: "Password hashing issue in server side" });
           if (result) {
-            const name = data[0].name;
-            const token = jwt.sign({ name }, "bqusp-yash-psuqb", {
+            const userdata = { name: data[0].name, email: data[0].email };
+            const token = jwt.sign(userdata, "bqusp-yash-psuqb", {
               expiresIn: "1d",
             });
             res.cookie("token", token, { httpOnly: true });
@@ -87,7 +88,10 @@ app.post("/login", (req, res) => {
     }
   });
 });
-
+app.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  return res.json({ Status: "Success" });
+});
 app.listen(3565, () => {
   console.log("Server Listening at port 3565");
 });

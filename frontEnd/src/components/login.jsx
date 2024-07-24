@@ -1,6 +1,6 @@
 import { MdOutlineEmail } from "react-icons/md";
 import { CgPassword } from "react-icons/cg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEyeOff } from "react-icons/io5";
 import { IoMdEye } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -13,6 +13,14 @@ const login = () => {
   const [lpass, setlpass] = useState(false);
   const [checkemail, setcheckemail] = useState({ icon: false, display: false });
   axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+    axios.get("http://localhost:3565/").then((res) => {
+      if (res.data.Status === "Success") {
+        navigate("/dashboard");
+      }
+    });
+  }, []);
   const handlelpass = () => {
     setlpass((prev) => {
       return !prev;
@@ -25,7 +33,7 @@ const login = () => {
   const handlesubmit = (ev) => {
     ev.preventDefault();
     axios.post("http://localhost:3565/login", formdata).then((res) => {
-      if (res.data.Status == "Sucess") {
+      if (res.data.Status == "Success") {
         return navigate("/dashboard");
       } else {
         setErrormsg(res.data.message);
